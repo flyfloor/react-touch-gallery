@@ -4,6 +4,12 @@
 
 open [http://braavos.me/react-touch-gallery](http://braavos.me/react-touch-gallery) in mobile browser and see results
 
+### Install
+
+```
+npm install react-touch-gallery --save
+```
+
 ### Usage
 
 ```
