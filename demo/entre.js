@@ -22,8 +22,8 @@ export class Demo extends Component {
     render() {
         return (
             <div>
-                <a href="#" onClick={this.showGallery.bind(this)}>show gallery</a>
                 <h3>Demo</h3>
+                <a href="#" onClick={this.showGallery.bind(this)}>show gallery</a>
                 <Gallery urls={urls} ref="galleryNode" showArrow={true} 
                     showRange={true} showCloseBtn={true}/>
                 <h3>Usage</h3>
@@ -32,6 +32,10 @@ export class Demo extends Component {
                 <h4>props</h4>
                 <table>
                     <tbody>
+                        <tr>
+                            <td>urls</td>
+                            <td>image urls</td>
+                        </tr>
                         <tr>
                             <td>showRange</td>
                             <td>show current page / total page</td>
