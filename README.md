@@ -1,8 +1,8 @@
-# react-photo-gallery
+# react-image-gallery
 
 ### Demo  
 
-open [http://braavos.me/react-photo-gallery](http://braavos.me/react-photo-gallery) in mobile browser and see results
+open [http://braavos.me/react-image-gallery](http://braavos.me/react-image-gallery) in mobile browser and see results
 
 ### Usage
 

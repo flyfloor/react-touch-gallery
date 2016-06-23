@@ -185,7 +185,7 @@ const Gallery = React.createClass({
             transform: `translate3d(-${baseWidth * current}px, 0, 0)`
         }
 
-        let className = display ? 'react-photo-gallery _active' : 'react-photo-gallery'
+        let className = display ? 'react-image-gallery _active' : 'react-image-gallery'
         return (
             <div className={className}>
                 <div className="_mask"></div>
