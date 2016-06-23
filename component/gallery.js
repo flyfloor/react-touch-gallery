@@ -5,12 +5,14 @@ const Gallery = React.createClass({
     propTypes: {
         urls: React.PropTypes.array,
         current: React.PropTypes.number,
+        onEnd: React.PropTypes.func,
+        onStart: React.PropTypes.func,
     },
     getDefaultProps() {
         return {
             urls: [],
             current: 0,
-            onMoving: false
+            onMoving: false,
         }
     },
     getInitialState() {
@@ -22,16 +24,17 @@ const Gallery = React.createClass({
             baseWidth: 0,
             baseHeight: 0,
             startX: 0,
-            startY: 0,
             offsetX: 0,
         }
     },
 
     componentDidMount() {
         this.calcInitFrame()
-        document.body.addEventListener('touchmove', function(event) {
-          event.preventDefault();
-        }, false); 
+        document.body.addEventListener('touchmove', e => e.preventDefault(), false)
+    },
+
+    componentWillReceiveProps(nextProps) {
+        document.body.removeEventListener('touchmove'); 
     },
     
     calcInitFrame(){
@@ -42,35 +45,50 @@ const Gallery = React.createClass({
         });
     },
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.current !== this.props.current) {
+            this.setState({
+                current: nextProps.current
+            });
+        }
+    },
+
     show(){
         this.setState({
-            display: true
+            display: true,
         });
     },
 
-    addTransition(callback){
-        let contentDOM  = ReactDOM.findDOMNode(this.refs.contentDOM);
+    hide(){
+        const {current} = this.props
+        this.setState({
+            display: false,
+            current
+        });
     },
 
-    cxtMoveHStyle(offsetX, offsetY){
-        const contentDOM = ReactDOM.findDOMNode(this.refs.contentDOM)
+    calcCxtStyle(offsetX){
         const {baseWidth, baseHeight, count, current} = this.state
-        let style = `width:${baseWidth * count}px;height:${baseHeight}px`
-        return `${style};transform:translate(${offsetX - current * baseWidth}px, ${offsetY}px)`
+        const {onStart, onEnd} = this.props
+        if (current === 0 && offsetX > 0 && onStart) {
+            onStart(current)
+        }
+        if (current === count - 1 && offsetX < 0 && onEnd) {
+            onEnd(current)
+        }
+        return `width:${baseWidth * count}px;height:${baseHeight}px;transform:translateX(${offsetX - current * baseWidth}px)`
     },
 
     resetCxtPosition(){
         const contentDOM = ReactDOM.findDOMNode(this.refs.contentDOM)
-        const {count, current} = this.state
-        contentDOM.setAttribute('style',this.cxtMoveHStyle(0, 0))
+        contentDOM.setAttribute('style', this.calcCxtStyle(0))
     },
     
     handleTouchStart(e){
-        const {pageX, pageY} = e.touches[0]
+        const {pageX} = e.touches[0]
         this.setState({
             onMoving: true,
             startX: pageX,
-            startY: pageY,
             offsetX: 0,
         });
     },
@@ -86,18 +104,16 @@ const Gallery = React.createClass({
         }
         this.resetCxtPosition()
     },
+
     handleTouchMove(e){
-        const {baseWidth, startX, startY, onMoving} = this.state
+        const {baseWidth, baseHeight, startX, onMoving} = this.state
         if (onMoving) {
             const contentDOM = ReactDOM.findDOMNode(this.refs.contentDOM)
-            const {pageX, pageY} = e.touches[0]
+            const { pageX } = e.touches[0]
             const offsetX = pageX - startX
-            const offsetY = pageY - startY
             // horizontal
-            if (Math.abs(offsetX / offsetY) > 1) {
-                this.setState({ offsetX })
-                contentDOM.setAttribute('style', this.cxtMoveHStyle(pageX - startX, 0))
-            }
+            this.setState({ offsetX })
+            contentDOM.setAttribute('style', this.calcCxtStyle(offsetX))
         }
     },
 
@@ -122,7 +138,7 @@ const Gallery = React.createClass({
                     {urls.map((url, index) => {
                         return (
                             <div key={index} className="_cell" style={{'width': baseWidth}}>
-                                <img src={url}/>
+                                <img src={url} onClick={this.hide}/>
                             </div>
                         )
                     })}
