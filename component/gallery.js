@@ -88,7 +88,7 @@ const Gallery = React.createClass({
         if (current === count - 1 && offsetX < 0 && onEnd) {
             onEnd(current)
         }
-        return `width:${baseWidth * count}px;height:${baseHeight}px;transform:translateX(${offsetX - current * baseWidth}px)`
+        return `width:${baseWidth * count}px;height:${baseHeight}px;transform:translate3d(${offsetX - current * baseWidth}px, 0, 0)`
     },
 
     resetCxtPosition(){
@@ -182,7 +182,7 @@ const Gallery = React.createClass({
         const style = {
             width: baseWidth * count,
             height: baseHeight,
-            transform: `translate(-${baseWidth * current}px, 0)`
+            transform: `translate3d(-${baseWidth * current}px, 0, 0)`
         }
 
         let className = display ? 'react-photo-gallery _active' : 'react-photo-gallery'
