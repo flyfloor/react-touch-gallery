@@ -38,14 +38,11 @@ const Gallery = React.createClass({
             offsetX: 0,
         }
     },
+
     componentDidMount() {
         this.calcInitFrame()
     },
 
-    componentWillUnmount: function() {
-        document.body.removeEventListener('touchmove'); 
-    },
-    
     calcInitFrame(){
         let {innerHeight, innerWidth} = window
         this.setState({
@@ -102,8 +99,8 @@ const Gallery = React.createClass({
     changeCurrent(current, callback){
         const {onChange} = this.props
         this.setState({ current }, () => {
-            if (callback) callback()
             if (onChange) onChange(current)
+            if (callback) return callback()
         });
     },
     
@@ -126,20 +123,20 @@ const Gallery = React.createClass({
         });
     },
 
-    handleTouchEnd(e){
+    handleTouchEnd(){
         this.setState({ onMoving: false })
         const {offsetX, current, baseWidth, count} = this.state
         if (offsetX >= baseWidth * 0.3 && current > 0) {
-            return this.changeCurrent(current - 1, this.resetCxtPosition());
+            return this.changeCurrent(current - 1, this.resetCxtPosition);
         }
         if (offsetX + baseWidth * 0.3 < 0 && current < count - 1) {
-            return this.changeCurrent(current + 1, this.resetCxtPosition());
+            return this.changeCurrent(current + 1, this.resetCxtPosition);
         }
         this.resetCxtPosition()
     },
 
     handleTouchMove(e){
-        const {baseWidth, baseHeight, startX, onMoving} = this.state
+        const {startX, onMoving} = this.state
         if (onMoving) {
             const contentDOM = ReactDOM.findDOMNode(this.refs.contentDOM)
             const { pageX } = e.touches[0]
