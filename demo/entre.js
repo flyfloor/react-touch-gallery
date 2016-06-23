@@ -12,9 +12,6 @@ const urls = ['http://img3.cache.netease.com/photo/0001/2016-06-22/BQ5U3SGL00AO0
 export class Demo extends Component {
     constructor(props){
         super(props)
-        this.state = {
-            current: 0
-        }
     }
 
     showGallery(){
@@ -22,19 +19,65 @@ export class Demo extends Component {
         galleryNode.show()
     }
 
-    onClick(){
-        this.setState({
-            current: 2
-        });
-    }
-
     render() {
         return (
             <div>
-                <a href="#" onClick={this.onClick.bind(this)}>ss</a>
-                <h3>Photo Galleries, mobile touch</h3>
                 <a href="#" onClick={this.showGallery.bind(this)}>show gallery</a>
-                <Gallery urls={urls} ref="galleryNode" current={this.state.current}/>
+                <h3>Demo</h3>
+                <Gallery urls={urls} ref="galleryNode" showArrow={true} 
+                    showRange={true} showCloseBtn={true}/>
+                <h3>Usage</h3>
+                <ol>
+                    <li>
+                        <h4>Default</h4>
+                        <code>{`<Gallery urls={urls}/>`}</code>
+                        <br/>
+                    </li>
+                    <li>
+                        <h4>props</h4>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>showRange</td>
+                                    <td>show current page / total page</td>
+                                </tr>
+                                <tr>
+                                    <td>showArrow</td>
+                                    <td>show navigation arrow</td>
+                                </tr>
+                                <tr>
+                                    <td>showCloseBtn</td>
+                                    <td>show close button</td>
+                                </tr>
+                                <tr>
+                                    <td>prevArrow</td>
+                                    <td>custom previous arrow node</td>
+                                </tr>
+                                <tr>
+                                    <td>nextArrow</td>
+                                    <td>custom next arrow node</td>
+                                </tr>
+                                <tr>
+                                    <td>event:onChange(index)</td>
+                                    <td>preview image change event</td>
+                                </tr>
+                                <tr>
+                                    <td>event:onEnd(index)</td>
+                                    <td>at last page, still go right</td>
+                                </tr>
+                                <tr>
+                                    <td>event:onStart(index)</td>
+                                    <td>at first page, still go left</td>
+                                </tr>
+                                <tr>
+                                    <td>current</td>
+                                    <td>initial active index page</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </li>
+                </ol>
+                <h3>to be continued...</h3>
             </div>
         )
     }

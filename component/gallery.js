@@ -7,12 +7,23 @@ const Gallery = React.createClass({
         current: React.PropTypes.number,
         onEnd: React.PropTypes.func,
         onStart: React.PropTypes.func,
+        showArrow: React.PropTypes.bool,
+        showRange: React.PropTypes.bool,
+        showCloseBtn: React.PropTypes.bool,
+        prevArrow: React.PropTypes.element,
+        nextArrow: React.PropTypes.element,
     },
     getDefaultProps() {
         return {
             urls: [],
             current: 0,
             onMoving: false,
+            showArrow: false,
+            showRange: false,
+            showCloseBtn: false,
+            prevArrow: <div>&#8592;</div>,
+            nextArrow: <div>&#8594;</div>,
+            closeBtn: <span>close</span>,
         }
     },
     getInitialState() {
@@ -27,13 +38,11 @@ const Gallery = React.createClass({
             offsetX: 0,
         }
     },
-
     componentDidMount() {
         this.calcInitFrame()
-        document.body.addEventListener('touchmove', e => e.preventDefault(), false)
     },
 
-    componentWillReceiveProps(nextProps) {
+    componentWillUnmount: function() {
         document.body.removeEventListener('touchmove'); 
     },
     
@@ -46,9 +55,15 @@ const Gallery = React.createClass({
     },
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.current !== this.props.current) {
+        const {current, urls} = this.props
+        if (nextProps.current !== current) {
             this.setState({
                 current: nextProps.current
+            });
+        }
+        if (nextProps.urls !== urls) {
+            this.setState({
+                count: nextProps.urls.length
             });
         }
     },
@@ -83,7 +98,25 @@ const Gallery = React.createClass({
         const contentDOM = ReactDOM.findDOMNode(this.refs.contentDOM)
         contentDOM.setAttribute('style', this.calcCxtStyle(0))
     },
+
+    changeCurrent(current, callback){
+        const {onChange} = this.props
+        this.setState({ current }, () => {
+            if (callback) callback()
+            if (onChange) onChange(current)
+        });
+    },
     
+    handlePrev(){
+        const {current} = this.state
+        if (current > 0) this.changeCurrent(current - 1)
+    },
+
+    handleNext(){
+        const {current, count} = this.state
+        if (current < count - 1) this.changeCurrent(current + 1)
+    },
+
     handleTouchStart(e){
         const {pageX} = e.touches[0]
         this.setState({
@@ -97,10 +130,10 @@ const Gallery = React.createClass({
         this.setState({ onMoving: false })
         const {offsetX, current, baseWidth, count} = this.state
         if (offsetX >= baseWidth * 0.3 && current > 0) {
-            return this.setState({ current: current - 1 }, this.resetCxtPosition());
+            return this.changeCurrent(current - 1, this.resetCxtPosition());
         }
         if (offsetX + baseWidth * 0.3 < 0 && current < count - 1) {
-            return this.setState({ current: current + 1 }, this.resetCxtPosition());
+            return this.changeCurrent(current + 1, this.resetCxtPosition());
         }
         this.resetCxtPosition()
     },
@@ -115,10 +148,38 @@ const Gallery = React.createClass({
             this.setState({ offsetX })
             contentDOM.setAttribute('style', this.calcCxtStyle(offsetX))
         }
+        e.preventDefault()
+    },
+
+    formatArrowAndBtn(){
+        const {showArrow, showCloseBtn, prevArrow, closeBtn, nextArrow} = this.props
+        const {current, count} = this.state
+        if (showArrow) {
+            return (
+                <div>
+                    {current !== 0 
+                        ? <div className="_prev-arrow" onClick={this.handlePrev}>
+                            {prevArrow}
+                        </div>
+                        : null}
+                    {current !== count - 1
+                        ? <div className="_next-arrow" onClick={this.handleNext}>
+                            {nextArrow}
+                        </div>
+                        : null}
+                    {showCloseBtn 
+                        ? <div className="_close-btn" onClick={this.hide}>
+                            {closeBtn}
+                        </div>
+                        : null}
+                </div>
+            )
+        }
+        return null
     },
 
     render() {
-        const {urls} = this.props
+        const {urls, showRange} = this.props
         const {display, baseWidth, onMoving, baseHeight, current, count} = this.state
 
         const style = {
@@ -131,6 +192,10 @@ const Gallery = React.createClass({
         return (
             <div className={className}>
                 <div className="_mask"></div>
+                {showRange 
+                    ? <div className="_range">{`${current + 1} / ${count}`}</div>
+                    : null}
+                {this.formatArrowAndBtn()}
                 <div className={onMoving ? '_content': '_content _slide'} ref="contentDOM"
                     style={style} 
                     onTouchStart={this.handleTouchStart} 
