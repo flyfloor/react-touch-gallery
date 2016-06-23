@@ -1,7 +1,7 @@
 {
   "name": "react-touch-gallery",
   "version": "0.0.1",
-  "description": "react image gallery for touch",
+  "description": "react photo gallery for touch",
   "main": "app.js",
   "scripts": {
     "start": "babel --presets es2015,react --watch component/ --out-dir lib/ & cross-env NODE_ENV=dev node server.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com"
+    "url": "https://github.com/jerryshew/react-touch-gallery"
   },
   "keywords": [
     "boilerplate"
   ],
   "author": "jerryshew",
   "license": "MIT",
-  "homepage": "https://github.com/jerryshew/react-image-gallery",
+  "homepage": "http://braavos.me/react-touch-gallery",
   "dependencies": {
     "react": "^0.14.2",
     "react-dom": "^0.14.2"
