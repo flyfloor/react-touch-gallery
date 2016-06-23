@@ -1,8 +1,8 @@
-# react-image-gallery
+# react-touch-gallery
 
 ### Demo  
 
-open [http://braavos.me/react-image-gallery](http://braavos.me/react-image-gallery) in mobile browser and see results
+open [http://braavos.me/react-touch-gallery](http://braavos.me/react-touch-gallery) in mobile browser and see results
 
 ### Usage
 
