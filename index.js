@@ -1,3 +1,3 @@
-var Gallery = require('./component/Gallery');
+var Gallery = require('./lib/Gallery');
 
 module.exports = Gallery;
