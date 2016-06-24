@@ -13,6 +13,11 @@ npm install react-touch-gallery --save
 ### Usage
 
 ```
+import Gallery from 'react-touch-gallery'
+```
+
+
+```
 <Gallery urls={urls}/>
 ```
 
