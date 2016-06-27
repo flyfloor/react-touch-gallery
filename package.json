@@ -1,6 +1,6 @@
 {
   "name": "react-touch-gallery",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "react photo gallery for touch",
   "main": "app.js",
   "scripts": {
