@@ -16,6 +16,9 @@ npm install react-touch-gallery --save
 import Gallery from 'react-touch-gallery'
 ```
 
+```
+import style from 'react-touch-gallery/css/gallery.less'
+```
 
 ```
 <Gallery urls={urls}/>

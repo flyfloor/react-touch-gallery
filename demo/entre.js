@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import Gallery from '../component/Gallery'
-import css from './gallery.less';
+import css from '../css/gallery.less';
 
 const urls = ['http://img3.cache.netease.com/photo/0001/2016-06-22/BQ5U3SGL00AO0001.jpg',
                 'http://img3.cache.netease.com/photo/0001/2016-06-22/BQ5U3SGM00AO0001.jpg',
